@@ -1,4 +1,9 @@
 /*! @import */
 @tailwind base;
 @tailwind components;
+
+.underline-dotted {
+    text-decoration: underline dotted;
+}
+
 @tailwind utilities;

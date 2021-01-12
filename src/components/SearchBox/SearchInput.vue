@@ -7,7 +7,7 @@
     style="width: 380px"
     v-model="find">
   <div class="text-2xl" v-else>
-    in <span class="italic font-bold cursor-pointer" @click="resetSearch">{{ selected }}</span>
+    in <span class="italic font-bold cursor-pointer underline-dotted" @click="resetSearch">{{ selected }}</span>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import { useStore } from 'vuex';
 // Local modules
 import debounce from '../../lib/debounce';
 import { searchCity } from '../../services/geolocation';
-import { places } from '../../store/places';
+import { places } from '../../lib/data/places';
 
 export default {
   setup() {

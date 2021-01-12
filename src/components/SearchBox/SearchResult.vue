@@ -7,7 +7,7 @@
           'p-4 cursor-pointer hover:bg-gray-100',
           i === places.length - 1 ? '' : 'border-b border-gray-300'
         ].join(' ')"
-        @click="searchPrayTimes(place)">{{ place.city }} - {{ place.country }}</li>
+        @click="checkPrayTimes(place)">{{ place.city }} - {{ place.country }}</li>
     </ol>
   </div>
 </template>
@@ -19,7 +19,8 @@ import { useStore } from 'vuex';
 
 // Local modules & data
 import { prayTimesByCity } from '../../services/pray-times';
-import { places } from '../../store/places';
+import { places } from '../../lib/data/places';
+import { setPrayTimes } from '../../lib/data/pray-time';
 
 export default {
   setup() {
@@ -28,16 +29,20 @@ export default {
     const { selected, searchResult } = toRefs(places);
 
     // Search pray times
-    const searchPrayTimes = async function(place) {
+    const checkPrayTimes = async function(place) {
       let result = await prayTimesByCity(place);
 
-      selected.value = place.city;
-      searchResult.value.length = 0;
+      if (result.length > 0) {
+        setPrayTimes(result);
+
+        selected.value = place.city;
+        searchResult.value.length = 0;
+      }
     }
 
     return {
       places: searchResult,
-      searchPrayTimes
+      checkPrayTimes
     }
   }
 }
