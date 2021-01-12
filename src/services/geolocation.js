@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import SERVICES from './index'
-import queryStringBuilder from '../mixins/queryString'
+import queryStringBuilder from '../lib/queryString'
 
 const searchCity = async function(keyword) {
   const query = queryStringBuilder({

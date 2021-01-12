@@ -1,5 +1,5 @@
 <template>
-  <div v-if="places.length > 0 && showPlaceResult" id="search-result" class="flex flex-col mt-4 w-1/2 bg-white border border-gray-200 rounded shadow">
+  <div v-if="places.length > 0" id="search-result" class="flex flex-col mt-4 w-1/2 bg-white border border-gray-200 rounded shadow">
     <ol>
       <li v-for="(place, i) in places"
         :key="place.id"
@@ -14,33 +14,29 @@
 
 <script>
 // Modules
-import { computed } from 'vue';
+import { computed, toRefs } from 'vue';
 import { useStore } from 'vuex';
 
 // Local modules & data
 import { prayTimesByCity } from '../../services/pray-times';
-import { selectedCity } from '../../store/places';
+import { places } from '../../store/places';
 
 export default {
   setup() {
     // Init
     const store = useStore();
+    const { selected, searchResult } = toRefs(places);
 
     // Search pray times
     const searchPrayTimes = async function(place) {
       let result = await prayTimesByCity(place);
 
-      store.commit('TOGGLE_PLACE_RESULT');
-
-      store.commit('SET_PRAY_TIMES', {
-        prayTimes: result,
-        selectedPlace: place.city
-      });
+      selected.value = place.city;
+      searchResult.value.length = 0;
     }
 
     return {
-      places: computed(() => store.getters.places),
-      showPlaceResult: computed(() => store.getters.showPlaceResult),
+      places: searchResult,
       searchPrayTimes
     }
   }

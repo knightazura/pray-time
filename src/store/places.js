@@ -1,7 +1,7 @@
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 
-export const cities = ref([]);
-export const selectedCity = reactive({
-  state: false,
-  lastSearch: ''
+export const places = reactive({
+  find: '',
+  searchResult: [],
+  selected: ''
 });

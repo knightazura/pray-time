@@ -1,5 +1,5 @@
 <template>
-  <main class="px-16 py-24">
+  <main class="px-16 2xl:px-0 py-32 max-w-screen-xl mx-auto">
     <p class="text-2xl">Pray times for you, a Moslem</p>
     <SearchBox />
   </main>
