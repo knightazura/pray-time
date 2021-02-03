@@ -1,5 +1,5 @@
 <template>
-  <div class="search-box flex flex-col">
+  <div class="search-box w-full absolute top-0 left-0">
     <SearchInput />
     <SearchResult />
   </div>

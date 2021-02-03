@@ -1,5 +1,8 @@
 <template>
-  <div v-if="places.length > 0" id="search-result" class="flex flex-col mt-4 w-1/2 bg-white border border-gray-200 rounded shadow">
+  <div v-if="places.length > 0"
+    id="search-result"
+    class="flex flex-col mt-4 bg-white border border-gray-200 rounded shadow"
+    :style="`max-height: ${maxHeight}px`">
     <ol>
       <li v-for="(place, i) in places"
         :key="place.id"
@@ -14,7 +17,7 @@
 
 <script>
 // Modules
-import { computed, toRefs } from 'vue';
+import { onMounted, toRefs, ref } from 'vue';
 import { useStore } from 'vuex';
 
 // Local modules & data
@@ -27,6 +30,7 @@ export default {
     // Init
     const store = useStore();
     const { selected, searchResult } = toRefs(places);
+    const maxHeight = ref(0);
 
     // Search pray times
     const checkPrayTimes = async function(place) {
@@ -40,14 +44,24 @@ export default {
       }
     }
 
+    onMounted(() => {
+      let placeInput = document.getElementById("place-input");
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      maxHeight.value = (window.innerHeight - (placeInput.getBoundingClientRect().top + scrollTop)) - 100;
+    });
+
     return {
       places: searchResult,
-      checkPrayTimes
+      checkPrayTimes,
+      maxHeight
     }
   }
 }
 </script>
 
 <style>
-
+#search-result {
+  overflow: auto;
+}
 </style>
