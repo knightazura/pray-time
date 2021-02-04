@@ -1,17 +1,20 @@
 <template>
-  <div class="mt-12">
-    <p class="text-xl">
+  <div class="mt-12 mb-10 text-center">
+    <p class="text-xl mb-4">
       Next pray is <span class="font-bold">{{ nextActivePray.name }}</span> {{ countdown }}
     </p>
-    <p class="my-2 text-4xl font-bold">{{ nextActivePray.time }}</p>
+    <TimeText category="next" :time="nextActivePray.time" />
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
 import { nextActivePray, timer, prayNow } from '../../lib/data/pray-time';
+import TimeText from './TimeText.vue';
 
 export default {
+  components: { TimeText },
+
   setup() {
     const countdown = computed(() => {
       let hw = '';
@@ -47,7 +50,8 @@ export default {
       return word;
     });
 
-    const c = computed(() => timer.value.minutes)
+    const c = computed(() => timer.value.minutes);
+
     return {
       nextActivePray,
       countdown,

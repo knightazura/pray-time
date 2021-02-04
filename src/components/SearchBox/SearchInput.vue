@@ -7,7 +7,7 @@
     placeholder="Please write your living place (City)"
     v-model="find">
   <div class="text-2xl text-center" v-else>
-    in <span class="italic font-bold cursor-pointer underline-dotted" @click="resetSearch(true)">{{ selected }}</span>
+    <span class="italic font-bold cursor-pointer underline-dotted" @click="resetSearch(true)">{{ selected }}</span>
   </div>
 </template>
 
