@@ -11,6 +11,11 @@
           i === places.length - 1 ? '' : 'border-b border-gray-300'
         ].join(' ')"
         @click="checkPrayTimes(place)">{{ place.city }} - {{ place.country }}</li>
+      <li v-if="places.length < metadata.totalCount"
+        class="p-4 cursor-pointer hover:bg-gray-100 text-blue-600"
+        @click="loadMoreCities(metadata.currentOffset + 5)">
+        Load more
+      </li>
     </ol>
   </div>
 </template>
@@ -21,6 +26,7 @@ import { onMounted, toRefs, ref } from 'vue';
 import { useStore } from 'vuex';
 
 // Local modules & data
+import { searchCity } from '../../services/geolocation';
 import { prayTimesByCity } from '../../services/pray-times';
 import { places } from '../../lib/data/places';
 import { setPrayTimes } from '../../lib/data/pray-time';
@@ -29,7 +35,7 @@ export default {
   setup() {
     // Init
     const store = useStore();
-    const { selected, searchResult } = toRefs(places);
+    const { selected, searchResult, find, metadata } = toRefs(places);
     const maxHeight = ref(0);
 
     // Search pray times
@@ -44,6 +50,13 @@ export default {
       }
     }
 
+    // Load more cities
+    const loadMoreCities = async function(offset) {
+      let result = await searchCity(find.value, offset);
+
+      searchResult.value = searchResult.value.concat(Array.from(result));
+    }
+
     onMounted(() => {
       let placeInput = document.getElementById("place-input");
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -54,7 +67,9 @@ export default {
     return {
       places: searchResult,
       checkPrayTimes,
-      maxHeight
+      maxHeight,
+      metadata,
+      loadMoreCities
     }
   }
 }
