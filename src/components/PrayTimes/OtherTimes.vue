@@ -15,7 +15,7 @@ export default {
   components: { OtherTimeItem },
 
   setup() {
-    const borderRight = (num) => num < nextOtherPrays.value.length - 1 ? 'border-r' : '';
+    const borderRight = (num) => num < nextOtherPrays.value.length - 1 ? 'md:border-r' : '';
 
     return {
       nextOtherPrays,

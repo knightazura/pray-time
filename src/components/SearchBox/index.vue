@@ -1,5 +1,5 @@
 <template>
-  <div class="search-box w-full absolute top-0 left-0">
+  <div class="search-box w-full absolute top-0 left-0 px-4 md:px-0">
     <SearchInput />
     <SearchResult />
   </div>
