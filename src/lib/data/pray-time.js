@@ -22,37 +22,30 @@ export const setPrayTimes = function(times) {
 }
 
 export const nextActiveTime = () => {
-  const today = DateTime.local();
+  // Init.
+  const today     = DateTime.local();
+  let nearest     = 0;
+  let activeTime  = prayTimes.value[0];
+  let nextDayTime = prayTimes.value[1];
+  let nap;                  // next ACTIVE pray
+  let nextActivePrayIndex;  // next ACTIVE pray index
 
-  // If first day of the month,
-  // then take first index
-  let activeIndex = (today.day === 1) ? 0 : 1;
-  let nextDayIndex = (today.day === 1) ? 1 : 2;
-
-  let activeTime = prayTimes.value[activeIndex];
-  let nextDayTime = prayTimes.value[nextDayIndex];
-
-  // Parse all pray times
-  let timings = activeTime.timings;
-
-  let nearest = 0;
-  let nap;
-  let nextActivePrayIndex; // current next active pray index to take other times
-  
-  // Pick next pray
-  Object.keys(timings)
+  // Iterate over prays to take pray time
+  Object.keys(activeTime.timings)
     .filter(checkPrayNames)
     .forEach((name, index) => {
       let waktuSholat = prayTimeParser(timings[name])
 
       const { milliseconds: diff } = today.diff(waktuSholat).toObject();
 
+      // Get next ACTIVE pray
       if ((nearest === 0 && diff < nearest) || (nearest !== 0 && diff > nearest)) {
         nearest = diff;
         nap = name;
         nextActivePrayIndex = index;
       }
 
+      // Get other next prays for today
       if (nextActivePrayIndex < index) {
         nextOtherPrays.value.push({
           name: name,
@@ -60,23 +53,25 @@ export const nextActiveTime = () => {
           nextDay: false
         });
 
-        // At the end of same day iteration
-        // get next day pray times (if any)
+        // At the end of the day iteration
+        // get tomorrow pray times (up to 4)
         if (index === FIVE_PRAYS.length - 1) {
-          let nextDayTimings = Object.keys(nextDayTime.timings).filter(checkPrayNames)
-
-          for (let x = 0; x < ((nextDayTimings.length - 1) - nextActivePrayIndex); x++) {
-            nextOtherPrays.value.push({
-              name: FIVE_PRAYS[x],
-              time: timings[FIVE_PRAYS[x]],
-              nextDay: true
+          Object.keys(nextDayTime.timings)
+            .filter(checkPrayNames)
+            .forEach((name, index) => {
+              if (index < nextActivePrayIndex) {
+                nextOtherPrays.value.push({
+                  name: FIVE_PRAYS[index],
+                  time: timings[FIVE_PRAYS[index]],
+                  nextDay: true
+                });
+              }
             });
-          }
         }
       }
     });
 
-  // Next Active Pray is...
+  // Next ACTIVE Pray is...
   nextActivePray.value = {
     name: nap,
     time: timings[nap]

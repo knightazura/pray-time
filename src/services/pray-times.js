@@ -14,10 +14,10 @@ const properTime = ((time, index, arr) => {
   }
   // If it's neither first day or last day of month,
   // then take times one day before and after respectively
-  else if (today > 1 && (index <= today && index >= today - 2)) {
+  else if (today > 1 && (index === today || index === today + 1)) {
     return time;
   }
-  // If it's last day of month, takes current day and yesterday
+  // If it's last day of month, takes current day and first day of next month (fetch data again)
   else if (Object.is(today, arr.length) && (index === arr.length - 1 || index === arr.length - 2)) {
     return time;
   }
