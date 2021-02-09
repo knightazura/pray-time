@@ -27,11 +27,12 @@ export const nextActiveTime = () => {
   let nearest     = 0;
   let activeTime  = prayTimes.value[0];
   let nextDayTime = prayTimes.value[1];
+  let timings     = activeTime.timings;
   let nap;                  // next ACTIVE pray
-  let nextActivePrayIndex;  // next ACTIVE pray index
+  let nextActivePrayIndex = 0;  // next ACTIVE pray index
 
   // Iterate over prays to take pray time
-  Object.keys(activeTime.timings)
+  Object.keys(timings)
     .filter(checkPrayNames)
     .forEach((name, index) => {
       let waktuSholat = prayTimeParser(timings[name])
@@ -41,8 +42,11 @@ export const nextActiveTime = () => {
       // Get next ACTIVE pray
       if ((nearest === 0 && diff < nearest) || (nearest !== 0 && diff > nearest)) {
         nearest = diff;
-        nap = name;
         nextActivePrayIndex = index;
+        nap = {
+          name: name,
+          time: timings[name]
+        };
       }
 
       // Get other next prays for today
@@ -56,15 +60,26 @@ export const nextActiveTime = () => {
         // At the end of the day iteration
         // get tomorrow pray times (up to 4)
         if (index === FIVE_PRAYS.length - 1) {
+
+          // next ACTIVE pray is tomorrow Fajr!
+          if (nextActivePrayIndex === 0) {
+            nap = {
+              name: FIVE_PRAYS[0],
+              time: nextDayTime.timings[FIVE_PRAYS[0]]
+            };
+
+            // Because all next other prays are tomorrow
+            // reset it!
+            nextOtherPrays.value = [];
+          }
+
           Object.keys(nextDayTime.timings)
             .filter(checkPrayNames)
             .forEach((name, index) => {
               if (index < nextActivePrayIndex) {
-                nextOtherPrays.value.push({
-                  name: FIVE_PRAYS[index],
-                  time: timings[FIVE_PRAYS[index]],
-                  nextDay: true
-                });
+                setNextOtherPrays(timings, index);
+              } else if (nextActivePrayIndex === 0 && index > nextActivePrayIndex) {
+                setNextOtherPrays(timings, index);
               }
             });
         }
@@ -72,15 +87,13 @@ export const nextActiveTime = () => {
     });
 
   // Next ACTIVE Pray is...
-  nextActivePray.value = {
-    name: nap,
-    time: timings[nap]
-  };
+  nextActivePray.value = {...nap};
 }
 
 const checkPrayNames = name => FIVE_PRAYS.includes(name);
 
 const prayTimeParser = timing => {
+  console.trace({timing});
   let prayTime = timing
     .split(" ")[0]
     .split(":");
@@ -88,6 +101,14 @@ const prayTimeParser = timing => {
   return DateTime.fromObject({
     hour: prayTime[0],
     minute: prayTime[1] 
+  });
+}
+
+const setNextOtherPrays = (timings, index) => {
+  nextOtherPrays.value.push({
+    name: FIVE_PRAYS[index],
+    time: timings[FIVE_PRAYS[index]],
+    nextDay: true
   });
 }
 
