@@ -1,18 +1,18 @@
 <template>
   <main class="flex flex-col pt-24 items-center mx-auto max-w-screen-xl h-screen">
     <div v-if="!selected" class="flex flex-col items-center">
-      <MainGraphic width="125" height="160" class="mb-8 transition-all duration-300" />
+      <MainGraphic width="125" height="160" class="mb-8" />
       <p class="transition-all duration-200 text-2xl">Pray times for you, a Moslem</p>
     </div>
     <div class="relative w-1/4">
       <SearchBox />
     </div>
-    <div v-if="showPrayTime">
+    <div class="px-8 md:px-0" v-if="showPrayTime">
       <NextTime />
       <OtherTimes />
     </div>
   </main>
-  <BottomWave />
+  <BottomWave class="hidden md:block" />
 </template>
 
 <script>
@@ -24,7 +24,7 @@ import OtherTimes from './components/PrayTimes/OtherTimes.vue';
 
 import { prayTimes, nextActivePray } from './lib/data/pray-time';
 import { places } from './lib/data/places';
-import { computed, onDeactivated, onMounted, ref, toRefs, watch } from 'vue';
+import { computed, toRefs } from 'vue';
 
 export default {
   name: 'App',

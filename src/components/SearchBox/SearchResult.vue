@@ -23,7 +23,6 @@
 <script>
 // Modules
 import { onMounted, toRefs, ref } from 'vue';
-import { useStore } from 'vuex';
 
 // Local modules & data
 import { searchCity } from '../../services/geolocation';
@@ -34,7 +33,6 @@ import { setPrayTimes } from '../../lib/data/pray-time';
 export default {
   setup() {
     // Init
-    const store = useStore();
     const { selected, searchResult, find, metadata } = toRefs(places);
     const maxHeight = ref(0);
 

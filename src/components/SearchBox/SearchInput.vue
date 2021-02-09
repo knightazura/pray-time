@@ -13,8 +13,7 @@
 
 <script>
 // Modules
-import { onMounted, reactive, toRefs, watch } from 'vue';
-import { useStore } from 'vuex';
+import { toRefs, watch } from 'vue';
 
 // Local modules
 import debounce from '../../lib/debounce';
@@ -24,8 +23,6 @@ import { places } from '../../lib/data/places';
 export default {
   setup() {
     // Init
-    const store = useStore();
-
     const { find, selected, searchResult } = toRefs(places);
 
     // Input watchers
