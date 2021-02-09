@@ -33,11 +33,12 @@ import { setPrayTimes } from '../../lib/data/pray-time';
 export default {
   setup() {
     // Init
-    const { selected, searchResult, find, metadata } = toRefs(places);
+    const { selected, searchResult, find, finding, metadata } = toRefs(places);
     const maxHeight = ref(0);
 
     // Search pray times
     const checkPrayTimes = async function(place) {
+      finding.value = true;
       let result = await prayTimesByCity(place);
 
       if (result.length > 0) {
@@ -45,6 +46,8 @@ export default {
 
         selected.value = place.city;
         searchResult.value.length = 0;
+
+        finding.value = false;
       }
     }
 

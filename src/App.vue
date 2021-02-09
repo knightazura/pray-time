@@ -4,8 +4,9 @@
       <MainGraphic width="125" height="160" class="mb-8" />
       <p class="transition-all duration-200 text-2xl">Pray times for you, a Moslem</p>
     </div>
-    <div class="relative w-1/4">
-      <SearchBox />
+    <div class="relative w-full md:w-1/4">
+      <div class="w-full text-center py-8 text-lg" v-if="finding">Fetching prayer times...</div>
+      <SearchBox :class="finding ? 'hidden' : ''" />
     </div>
     <div class="px-8 md:px-0" v-if="showPrayTime">
       <NextTime />
@@ -37,12 +38,13 @@ export default {
   },
 
   setup() {
-    const { selected } = toRefs(places);
+    const { selected, finding } = toRefs(places);
 
     return {
       showPrayTime: computed(() => prayTimes.value.length > 0 && selected.value),
       nextActivePray,
-      selected
+      selected,
+      finding
     }
   }
 }
