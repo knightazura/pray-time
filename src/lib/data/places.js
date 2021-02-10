@@ -2,7 +2,10 @@ import { reactive } from "vue";
 
 export const places = reactive({
   find: '',
-  finding: false,
+  finding: {
+    cities: false,
+    prayTime: false
+  },
   searchResult: [],
   selected: '',
   metadata: {

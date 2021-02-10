@@ -5,8 +5,8 @@
       <p class="transition-all duration-200 text-2xl">Pray times for you, a Moslem</p>
     </div>
     <div class="relative w-full md:w-1/4">
-      <div v-if="finding" class="w-full text-center py-8 text-lg">Fetching prayer times...</div>
-      <SearchBox :class="finding ? 'hidden' : ''" />
+      <div v-if="finding.prayTime" class="w-full text-center py-8 text-lg">Fetching prayer times...</div>
+      <SearchBox :class="finding.prayTime ? 'hidden' : ''" />
     </div>
     <div class="px-8 md:px-0" v-if="showPrayTime">
       <NextTime />

@@ -23,15 +23,20 @@ import { places } from '../../lib/data/places';
 export default {
   setup() {
     // Init
-    const { find, selected, searchResult } = toRefs(places);
+    const { find, finding, selected, searchResult } = toRefs(places);
 
     // Input watchers
     watch(find, debounce(async function(keyword) {
       if (!keyword) {
         resetSearch();
       } else if(!!selected) {
+        finding.value.cities = true
         let result = await searchCity(keyword);
-        searchResult.value = Array.from(result);
+
+        if (result) {
+          searchResult.value = Array.from(result);
+          finding.value.cities = false;
+        }
       }
     }, 500));
 

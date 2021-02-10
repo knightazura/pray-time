@@ -1,5 +1,5 @@
 <template>
-  <div v-if="places.length > 0"
+  <div v-if="places.length > 0 && !finding.cities"
     id="search-result"
     class="flex flex-col mt-4 bg-white border border-gray-200 rounded shadow"
     :style="`max-height: ${maxHeight}px`">
@@ -17,6 +17,11 @@
         Load more
       </li>
     </ol>
+  </div>
+  <div v-else-if="finding.cities"
+    id="search-result"
+    class="flex flex-col mt-4 bg-white border border-gray-200 rounded shadow">
+    <p class="p-4 italic hover:bg-gray-100 text-gray-500">Looking for your lovely city</p>
   </div>
 </template>
 
@@ -38,7 +43,7 @@ export default {
 
     // Search pray times
     const checkPrayTimes = async function(place) {
-      finding.value = true;
+      finding.value.prayTime = true;
       let result = await prayTimesByCity(place);
 
       if (result.length > 0) {
@@ -47,7 +52,7 @@ export default {
         selected.value = place.city;
         searchResult.value.length = 0;
 
-        finding.value = false;
+        finding.value.prayTime = false;
       }
     }
 
@@ -70,7 +75,8 @@ export default {
       checkPrayTimes,
       maxHeight,
       metadata,
-      loadMoreCities
+      loadMoreCities,
+      finding
     }
   }
 }
