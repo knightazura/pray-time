@@ -1,5 +1,5 @@
-const GEOCITIES_API = 'https://world-cities-api.test/v1';
-const PRAYTIMES_API = 'https://api.aladhan.com/v1';
+const GEOCITIES_API = import.meta.env.VITE_GEOCITIES_API;
+const PRAYTIMES_API = import.meta.env.VITE_PRAYTIMES_API;
 
 const SERVICES = {
   GEOCITIES_API,
