@@ -1,8 +1,8 @@
-const GEOLOCATION_API = 'http://geodb-free-service.wirefreethought.com/v1';
-const PRAYTIMES_API = 'http://api.aladhan.com/v1'
+const GEOCITIES_API = 'https://world-cities-api.test/v1';
+const PRAYTIMES_API = 'https://api.aladhan.com/v1';
 
 const SERVICES = {
-  GEOLOCATION_API,
+  GEOCITIES_API,
   PRAYTIMES_API
 }
 

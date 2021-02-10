@@ -12,7 +12,7 @@ const searchCity = async function(keyword, offset = 0) {
   })
 
   try {
-    let place = await axios.get(`${SERVICES.GEOLOCATION_API}/geo/cities?${query}`)
+    let place = await axios.get(`${SERVICES.GEOCITIES_API}/cities?${query}`)
     
     if (place.statusText === "OK" && place.status === 200) {
       // Set metadata
