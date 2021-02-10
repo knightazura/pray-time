@@ -35,7 +35,7 @@ const prayTimesByCity = async function(place) {
   try {
     let response = await axios.get(`${SERVICES.PRAYTIMES_API}/calendarByCity?${query}`);
 
-    if (response.statusText === "OK" && response.status === 200) {
+    if (response.data.status === "OK" && response.status === 200) {
       let times = [...response.data.data];
 
       return times.filter(properTime);
