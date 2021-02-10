@@ -1,11 +1,11 @@
 <template>
-  <main class="flex flex-col pt-24 items-center mx-auto max-w-screen-xl h-screen">
+  <main class="flex flex-col pt-12 md:pt-24 items-center mx-auto max-w-screen-xl">
     <div v-if="!selected" class="flex flex-col items-center">
       <MainGraphic width="125" height="160" class="mb-8" />
       <p class="transition-all duration-200 text-2xl">Pray times for you, a Moslem</p>
     </div>
     <div class="relative w-full md:w-1/4">
-      <div class="w-full text-center py-8 text-lg" v-if="finding">Fetching prayer times...</div>
+      <div  class="w-full text-center py-8 text-lg">Fetching prayer times...</div>
       <SearchBox :class="finding ? 'hidden' : ''" />
     </div>
     <div class="px-8 md:px-0" v-if="showPrayTime">
@@ -13,7 +13,7 @@
       <OtherTimes />
     </div>
   </main>
-  <BottomWave class="hidden md:block" />
+  <BottomWave class="absolute bottom-0 left-0" />
 </template>
 
 <script>
