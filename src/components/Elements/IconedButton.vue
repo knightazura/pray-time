@@ -1,12 +1,22 @@
 <template>
-  <button class="iconed-button absolute p-4">
-    <fa icon="search" class="text-white mx-1" />
+  <button class="iconed-button absolute p-4 z-20">
+    <fa v-if="buttonState === 1" icon="search" class="text-white mx-1" />
+    <fa v-if="buttonState === 0" icon="times" class="text-white mx-1" />
   </button>
 </template>
 
 <script>
-export default {
+import { toRefs, computed } from 'vue';
+import { places } from '../../lib/data/places';
 
+export default {
+  setup() {
+    const { searchResult } = toRefs(places);
+    
+    return {
+      buttonState: computed(() => searchResult.value.length > 0 ? 0 : 1)
+    }
+  }
 }
 </script>
 
