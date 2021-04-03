@@ -4,11 +4,6 @@
 @tailwind base;
 @tailwind components;
 
-h1 {
-    @apply text-4xl;
-    font-family: 'Biryani', sans-serif;                                                     
-}
-
 .underline-dotted {
     text-decoration: underline dotted;
 }
@@ -27,3 +22,17 @@ h1 {
 }
 
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --bg-main: 209, 225, 237;
+        --primary-color: 0, 153, 255;
+        --primary-end-color: 0, 117, 255;
+        --action-color: 0, 172, 131;
+        --action-end-color: 0, 168, 97;
+    }
+    h1 {
+        @apply text-4xl;
+        font-family: 'Biryani', sans-serif;
+    }
+}
