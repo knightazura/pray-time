@@ -33,7 +33,7 @@
         --white: 255, 255, 255;
     }
     h1 {
-        @apply text-4xl;
+        font-size: clamp(2rem, 9vw, 2.25rem);
         font-family: 'Biryani', sans-serif;
     }
 }
