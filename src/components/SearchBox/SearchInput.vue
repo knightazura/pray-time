@@ -7,11 +7,7 @@
       placeholder="Search your living place (city)" />
     <IconedButton @click="searchCity" />
 
-    <div v-show="sr" class="search-results-wrapper" :style="`max-height: ${maxHeight}px`">
-      <div v-for="r in searchResult" :key="r.city" class="py-4 search-results-item">
-        {{ r.city }} - {{ r.country }}
-      </div>
-    </div>
+    <SearchResult v-show="finding.cities === 2" :maxHeight="maxHeight" />
   </div>
 </template>
 
@@ -25,22 +21,23 @@ import { places } from '../../lib/data/places';
 
 // Components
 import IconedButton from '../Elements/IconedButton.vue';
+import SearchResult from './SearchResult.vue';
 
 export default {
   components: {
-    IconedButton
+    IconedButton,
+    SearchResult
   },
 
   setup() {
     // Init
     const { find, finding, searchResult } = toRefs(places);
-    const sr = ref(false);
     const maxHeight = ref(0);
 
     // Handle resize
     const handleResize = function() {
-      const srw = document.querySelector(".search-results-wrapper");
-      maxHeight.value = window.innerHeight - (srw.parentNode.offsetTop + 64);
+      const searchInput = document.querySelector("input.search-city");
+      maxHeight.value = window.innerHeight - (searchInput.getBoundingClientRect().top + 128);
     }
 
     // Mounted
@@ -53,7 +50,6 @@ export default {
       find,
       finding,
       searchResult,
-      sr,
       maxHeight
     }
   },
@@ -62,22 +58,23 @@ export default {
     // API calls to find city
     async searchCity() {
       // Loader for cities is ACTIVE
-      this.finding.cities = true;
+      this.finding.cities = this.finding.cities | 1;
 
-      if (!this.sr) {
+      if (this.finding.cities === 1) {
         // API calls find cities
         try {
           let result = await searchCity(this.find);
           
           if (result) {
-            this.sr = true
+            this.finding.cities = this.finding.cities << 1;
             this.searchResult = result;
-          }        
+          }
         } catch (error) {
+          this.finding.cities = this.finding.cities | 2;
           console.error({error})
         }
       } else {
-        this.sr = false
+        this.finding.cities = this.finding.cities >> 1;
         this.searchResult = []
       }
     },
@@ -90,12 +87,5 @@ export default {
   @apply w-full absolute top-0 z-10 px-4 py-6 outline-none;
   border-radius: 16px;
   box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.08);
-}
-
-.search-results-wrapper {
-  @apply absolute w-full z-0 bg-white px-4;
-  padding-top: 72px;
-  border-radius: 16px;
-  overflow: auto;
 }
 </style>
