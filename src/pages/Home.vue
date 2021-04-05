@@ -5,7 +5,7 @@
     <span class="font-black text-primary">pray times</span> for <br>
     <span class="font-black">today</span>
   </h1>
-  <NewSearchInput />
+  <SearchInput />
   <div class="full-bleed credits mb-4">
     <div class="flex justify-center">
       <mzkLogo />
@@ -16,13 +16,13 @@
 
 <script>
 // Components
-import NewSearchInput from '../components/SearchBox/NewSearchInput.vue';
+import SearchInput from '../components/SearchBox/SearchInput.vue';
 import mzkLogo from '../components/Elements/mzkLogo.vue';
 
 export default {
   name: 'Home',
   components: {
-    NewSearchInput,
+    SearchInput,
     mzkLogo
   },
 }
