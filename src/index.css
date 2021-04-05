@@ -4,13 +4,36 @@
 @tailwind base;
 @tailwind components;
 
-h1 {
-    @apply text-4xl;
-    font-family: 'Biryani', sans-serif;                                                     
-}
-
 .underline-dotted {
     text-decoration: underline dotted;
 }
 
+.full-bleed-grid {
+    grid-template-columns: 1fr min(65ch, 100%) 1fr;
+}
+
+.full-bleed-grid > * {
+    grid-column: 2;
+}
+
+.full-bleed {
+    width: 100%;
+    grid-column: 1 / -1;
+}
+
 @tailwind utilities;
+
+@layer base {
+    :root {
+        --bg-main: 209, 225, 237;
+        --primary-color: 0, 153, 255;
+        --primary-end-color: 0, 117, 255;
+        --action-color: 0, 172, 131;
+        --action-end-color: 0, 168, 97;
+        --white: 255, 255, 255;
+    }
+    h1 {
+        font-size: clamp(2rem, 9vw, 2.25rem);
+        font-family: 'Biryani', sans-serif;
+    }
+}

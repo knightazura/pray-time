@@ -1,57 +1,91 @@
 <template>
-  <input
-    v-if="!selected"
-    id="place-input"
-    class="mt-4 p-4 w-full bg-white border border-gray-200 rounded shadow outline-none transition-shadow duration-300 focus:shadow-lg"
-    type="text"
-    placeholder="Please write your living place (City)"
-    v-model="find">
-  <div class="text-2xl text-center" v-else>
-    <span class="italic font-bold cursor-pointer underline-dotted" @click="resetSearch(true)">{{ selected }}</span>
+  <div class="relative mt-4">
+    <input
+      v-model="find"
+      type="text"
+      class="search-city"
+      placeholder="Search your living place (city)" />
+    <IconedButton @click="searchCity" />
+
+    <SearchResult v-show="finding.cities === 2" :maxHeight="maxHeight" />
   </div>
 </template>
 
 <script>
 // Modules
-import { toRefs, watch } from 'vue';
+import { onMounted, ref, toRefs } from 'vue';
 
 // Local modules
-import debounce from '../../lib/debounce';
 import { searchCity } from '../../services/geolocation';
 import { places } from '../../lib/data/places';
 
+// Components
+import IconedButton from '../Elements/IconedButton.vue';
+import SearchResult from './SearchResult.vue';
+
 export default {
+  components: {
+    IconedButton,
+    SearchResult
+  },
+
   setup() {
     // Init
-    const { find, finding, selected, searchResult } = toRefs(places);
+    const { find, finding, searchResult } = toRefs(places);
+    const maxHeight = ref(0);
 
-    // Input watchers
-    watch(find, debounce(async function(keyword) {
-      if (!keyword) {
-        resetSearch();
-      } else if(!!selected) {
-        finding.value.cities = true
-        let result = await searchCity(keyword);
+    // Handle resize
+    const handleResize = function() {
+      const searchInput = document.querySelector("input.search-city");
+      maxHeight.value = window.innerHeight - (searchInput.getBoundingClientRect().top + 128);
+    }
 
-        if (result) {
-          searchResult.value = Array.from(result);
-          finding.value.cities = false;
-        }
-      }
-    }, 500));
-
-    // Reset search method
-    const resetSearch = (changed = false) => {
-      find.value = changed ? selected.value : '';
-      searchResult.value = changed ?? [];
-      selected.value = '';
-    };
+    // Mounted
+    onMounted(() => {
+      window.addEventListener('resize', handleResize)
+      handleResize()
+    })
 
     return {
       find,
-      selected,
-      resetSearch
+      finding,
+      searchResult,
+      maxHeight
     }
+  },
+
+  methods: {
+    // API calls to find city
+    async searchCity() {
+      // Loader for cities is ACTIVE
+      this.finding.cities = this.finding.cities | 1;
+
+      if (this.finding.cities === 1) {
+        // API calls find cities
+        try {
+          let result = await searchCity(this.find);
+          
+          if (result) {
+            this.finding.cities = this.finding.cities << 1;
+            this.searchResult = result;
+          }
+        } catch (error) {
+          this.finding.cities = this.finding.cities | 2;
+          console.error({error})
+        }
+      } else {
+        this.finding.cities = this.finding.cities >> 1;
+        this.searchResult = []
+      }
+    },
   }
 }
 </script>
+
+<style>
+.search-city {
+  @apply w-full absolute top-0 z-10 px-4 py-6 outline-none;
+  border-radius: 16px;
+  box-shadow: 0px 8px 24px 0px rgba(0, 0, 0, 0.08);
+}
+</style>

@@ -1,33 +1,22 @@
 <template>
-  <div v-if="places.length > 0 && !finding.cities"
-    id="search-result"
-    class="flex flex-col mt-4 bg-white border border-gray-200 rounded shadow"
-    :style="`max-height: ${maxHeight}px`">
-    <ol>
-      <li v-for="(place, i) in places"
-        :key="place.id"
-        :class="[
-          'p-4 cursor-pointer hover:bg-gray-100',
-          i === places.length - 1 ? '' : 'border-b border-gray-300'
-        ].join(' ')"
-        @click="checkPrayTimes(place)">{{ place.city }} - {{ place.country }}</li>
-      <li v-if="places.length < metadata.totalCount"
-        class="p-4 cursor-pointer hover:bg-gray-100 text-blue-600"
-        @click="loadMoreCities(metadata.currentOffset + 5)">
-        Load more
-      </li>
-    </ol>
-  </div>
-  <div v-else-if="finding.cities"
-    id="search-result"
-    class="flex flex-col mt-4 bg-white border border-gray-200 rounded shadow">
-    <p class="p-4 italic hover:bg-gray-100 text-gray-500">Looking for your lovely city</p>
+  <div class="search-result-wrapper" :style="`max-height:${maxHeight}px`">
+    <div v-for="place in places"
+      @click="checkPrayTimes(place)"
+      :key="place.city"
+      class="search-results-item py-4 cursor-pointer hover:bg-gray-100">
+      {{ place.city }} - {{ place.country }}
+    </div>
+    <div v-if="places.length < metadata.totalCount && finding.cities === 2"
+      class="py-4 cursor-pointer hover:bg-gray-100"
+      @click="loadMoreCities()">
+      Load more
+    </div>
   </div>
 </template>
 
 <script>
 // Modules
-import { onMounted, toRefs, ref } from 'vue';
+import { toRefs } from 'vue';
 
 // Local modules & data
 import { searchCity } from '../../services/geolocation';
@@ -36,10 +25,12 @@ import { places } from '../../lib/data/places';
 import { setPrayTimes } from '../../lib/data/pray-time';
 
 export default {
-  setup() {
+  props: ['maxHeight'],
+
+  setup(props) {
     // Init
     const { selected, searchResult, find, finding, metadata } = toRefs(places);
-    const maxHeight = ref(0);
+    const { maxHeight } = toRefs(props);
 
     // Search pray times
     const checkPrayTimes = async function(place) {
@@ -50,25 +41,20 @@ export default {
         setPrayTimes(result);
 
         selected.value = place.city;
-        searchResult.value.length = 0;
+        searchResult.value = [];
 
         finding.value.prayTime = false;
+        finding.value.cities = 0;
       }
     }
 
     // Load more cities
-    const loadMoreCities = async function(offset) {
+    const loadMoreCities = async function() {
+      let offset = metadata.value.currentOffset + 1;
       let result = await searchCity(find.value, offset);
 
       searchResult.value = searchResult.value.concat(Array.from(result));
     }
-
-    onMounted(() => {
-      let placeInput = document.getElementById("place-input");
-      let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      maxHeight.value = (window.innerHeight - (placeInput.getBoundingClientRect().top + scrollTop)) - 100;
-    });
 
     return {
       places: searchResult,
@@ -83,7 +69,10 @@ export default {
 </script>
 
 <style>
-#search-result {
+.search-result-wrapper {
+  @apply absolute w-full z-0 bg-white px-4;
+  padding-top: 72px;
+  border-radius: 16px;
   overflow: auto;
 }
 </style>
