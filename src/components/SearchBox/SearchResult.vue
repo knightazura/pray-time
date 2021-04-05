@@ -50,7 +50,7 @@ export default {
 
     // Load more cities
     const loadMoreCities = async function() {
-      let offset = metadata.value.currentOffset + 5;
+      let offset = metadata.value.currentOffset + 1;
       let result = await searchCity(find.value, offset);
 
       searchResult.value = searchResult.value.concat(Array.from(result));
