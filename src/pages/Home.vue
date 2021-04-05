@@ -2,7 +2,7 @@
   <!-- New Design -->
   <h1 class="pt-10 md:pt-20" style="line-height: 150%;">
     Know your <br>
-    <span class="font-black" style="color: #0099FF">pray times</span> for <br>
+    <span class="font-black text-primary">pray times</span> for <br>
     <span class="font-black">today</span>
   </h1>
   <NewSearchInput />

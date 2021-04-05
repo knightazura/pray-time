@@ -11,11 +11,18 @@ module.exports = {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: 'media',
   theme: {
-    extend: {
-      skin: {
-        primary: withOpacity('--primary-color'),
-      }
+    colors: {
+      main: withOpacity('--bg-main'),
+      primary: withOpacity('--primary-color'),
+      white: withOpacity('--white')
     },
+    gradientColorStops: theme => ({
+      'primary': withOpacity('--primary-color'),
+      'primary-end': withOpacity('--primary-end-color'),
+      'action': withOpacity('--action-color'),
+      'action-end': withOpacity('--action-end-color')
+    }),
+    extend: {},
   },
   variants: {
     extend: {},

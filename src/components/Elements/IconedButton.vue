@@ -1,5 +1,5 @@
 <template>
-  <button class="iconed-button absolute p-4 z-20">
+  <button class="iconed-button">
     <fa v-if="buttonState === 1" icon="search" class="text-white mx-1" />
     <fa v-if="buttonState === 0" icon="times" class="text-white mx-1" />
   </button>
@@ -22,7 +22,7 @@ export default {
 
 <style>
 .iconed-button {
-  background: linear-gradient(180deg, #0099FF 0%, #0075FF 100%);
+  @apply absolute p-4 z-20 bg-gradient-to-b from-primary to-primary-end;
   box-shadow: 0px 1px 16px 0px rgba(136, 112, 112, 0.24);
   border-radius: 8px;
   top: 8px;

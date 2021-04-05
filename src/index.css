@@ -30,6 +30,7 @@
         --primary-end-color: 0, 117, 255;
         --action-color: 0, 172, 131;
         --action-end-color: 0, 168, 97;
+        --white: 255, 255, 255;
     }
     h1 {
         @apply text-4xl;
