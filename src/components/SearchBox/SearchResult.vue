@@ -3,11 +3,11 @@
     <div v-for="place in places"
       @click="checkPrayTimes(place)"
       :key="place.city"
-      class="search-results-item py-4 cursor-pointer hover:bg-gray-100">
+      class="search-results-item p-4 cursor-pointer hover:bg-primary hover:text-white">
       {{ place.city }} - {{ place.country }}
     </div>
     <div v-if="places.length < metadata.totalCount && finding.cities === 2"
-      class="py-4 cursor-pointer hover:bg-gray-100"
+      class="p-4 cursor-pointer hover:bg-primary hover:text-white"
       @click="loadMoreCities()">
       Load more
     </div>
@@ -72,7 +72,7 @@ export default {
 
 <style>
 .search-result-wrapper {
-  @apply absolute w-full z-0 bg-white px-4;
+  @apply absolute w-full z-0 bg-white;
   padding-top: 72px;
   border-radius: 16px;
   overflow: auto;
