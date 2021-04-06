@@ -4,7 +4,7 @@ import SERVICES from './index'
 import queryStringBuilder from '../lib/queryString'
 import { places } from '../lib/data/places';
 
-const searchCity = async function(keyword, offset = 1) {
+const searchCity = async function(keyword, offset = 0) {
   const query = queryStringBuilder({
     limit: 5,
     offset: offset,
