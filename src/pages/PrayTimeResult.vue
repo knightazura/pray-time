@@ -1,32 +1,38 @@
 <template>
-  <div class="grid min-h-screen" style="background-color: #D1E1ED; grid-template-rows: max-content max-content 1fr">
-    <h1 class="selected-city text-center mt-12">Jakarta</h1>
+  <h1 class="selected-city text-center mt-8">Jakarta</h1>
 
-    <!-- Active Pray Time 3D Widget -->
-    <div class="active-pray-time mx-9 p-8 mt-4 relative" style="background-color: #0099FF; border-radius: 16px; box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);">
-      <div class="pray-icon" style="padding-top: 12px; position: absolute; top: 32px; right: 32px;">
-        <ashr-icon class="mx-auto"></ashr-icon>
-      </div>
-      <p class="pray-name text-white" style="font-size: 24px; text-shadow: -4px 4px 8px rgba(0, 0, 0, 0.25);">Next is Ashr</p>
-      <p class="text-sm text-white" style="color: #C5E8FF; text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);">in 01 hour and 37 minutes</p>
-      <p class="time text-6xl text-white pt-4" style="text-shadow: -12px 16px 24px rgba(0, 0, 0, 0.45);">15.32</p>
+  <!-- Active Pray Time 3D Widget -->
+  <div class="active-pray-time p-8 mt-4 relative" style="background-color: #0099FF; border-radius: 16px; box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);">
+    <div class="pray-icon" style="padding-top: 12px; position: absolute; top: 32px; right: 32px;">
+      <ashr-icon class="mx-auto"></ashr-icon>
     </div>
-    
-    <!-- Next time -->
-    <div class="next-time w-full mt-9" style="background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.4) 100%); border: 1px solid rgba(75, 108, 132, 0.16); box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.08);">
-      <ol>
-        <li v-for="(np, i) in nextPrays" :key="i">
-          <div class="px-9 flex items-center next-prays">
-            <div class="pray-icon" style="padding-top: 12px;">
-              <component :is="np.icon" class="mx-auto"></component>
-            </div>
-            <div class="flex flex-col ml-4">
-              <span class="text-sm">{{ np.name }}</span>
-              <span class="text-2xl">{{ np.time }}</span>
-            </div>
+    <p class="pray-name text-white" style="font-size: 24px; text-shadow: -4px 4px 8px rgba(0, 0, 0, 0.25);">Next is Ashr</p>
+    <p class="text-sm text-white" style="color: #C5E8FF; text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);">in 01 hour and 37 minutes</p>
+    <p class="time text-6xl text-white pt-4" style="text-shadow: -12px 16px 24px rgba(0, 0, 0, 0.45);">15.32</p>
+  </div>
+  
+  <!-- Next time -->
+  <div class="full-bleed next-time mt-9">
+    <ol>
+      <li v-for="(np, i) in nextPrays" :key="i">
+        <div class="px-9 flex items-center next-prays">
+          <div class="pray-icon" style="padding-top: 12px;">
+            <component :is="np.icon" class="mx-auto"></component>
           </div>
-        </li>
-      </ol>
+          <div class="flex flex-col ml-4">
+            <span class="text-sm">{{ np.name }}</span>
+            <span class="text-2xl font-bold">{{ np.time }}</span>
+          </div>
+        </div>
+      </li>
+    </ol>
+    <div class="flex mt-8 mb-4 mx-4 p-2 rounded-2xl bg-white border-main items-center">
+      <div class="flex-grow p-4 rounded-lg text-shad text-white font-bold bg-gradient-to-b from-action to-action-end border border-white border-opacity-40" style="text-shadow: -4px 8px 8px rgba(0, 0, 0, 0.08);">
+        <fa icon="arrow-down" size="lg" class="mr-3"></fa> Save for next time
+      </div>
+      <div class="flex-shrink">
+        <fa icon="search" size="lg" class="mx-4"></fa>
+      </div>
     </div>
   </div>
 </template>
@@ -71,26 +77,20 @@ export default {
 </script>
 
 <style scoped>
-@media (max-width: 321px) {
-  main.main-wrapper {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-  h1.home-title {
-    font-size: 1.5rem;
-  }
-}
-
 .pray-icon {
   width: 48px;
   height: 48px;
   background: radial-gradient(63.54% 63.54% at 75% 9.38%, #FFE0B3 0%, #FBB54B 100%);
-  box-shadow: -12px 16px 24px rgba(0, 0, 0, 0.35), inset 0px 2px 4px rgba(255, 255, 255, 0.25);
+  box-shadow: -12px 16px 24px rgba(0, 0, 0, 0.16), inset 0px 2px 4px rgba(255, 255, 255, 0.16);
   border-radius: 64px;
 }
 
 .next-time {
+  background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0.4) 100%);
+  border: 1px solid rgba(75, 108, 132, 0.16);
+  box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 32px;
+  border-top-right-radius: 32px;
 }
 
 ol > li {

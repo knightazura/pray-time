@@ -22,7 +22,11 @@ module.exports = {
       'action': withOpacity('--action-color'),
       'action-end': withOpacity('--action-end-color')
     }),
-    extend: {},
+    extend: {
+      gridTemplateColumns: {
+        'full-bleed': '1fr min(65ch, calc(100% - 64px)) 1fr'
+      }
+    },
   },
   variants: {
     extend: {},
