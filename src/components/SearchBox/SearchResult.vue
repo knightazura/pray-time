@@ -21,7 +21,7 @@ import { toRefs } from 'vue';
 // Local modules & data
 import { searchCity } from '../../services/geolocation';
 import { prayTimesByCity } from '../../services/pray-times';
-import { places } from '../../lib/data/places';
+import { places, findingStateMutator, searchResultMutator } from '../../lib/data/places';
 import { setPrayTimes } from '../../lib/data/pray-time';
 
 export default {
@@ -41,10 +41,12 @@ export default {
         setPrayTimes(result);
 
         selected.value = place.city;
-        searchResult.value = [];
+        searchResultMutator.empty();
 
         finding.value.prayTime = false;
-        finding.value.cities = 0;
+        
+        // State for finding cities becomes IDLE
+        findingStateMutator('cities').idle();
       }
     }
 

@@ -17,7 +17,7 @@ import { onMounted, ref, toRefs } from 'vue';
 
 // Local modules
 import { searchCity } from '../../services/geolocation';
-import { places } from '../../lib/data/places';
+import { places, findingStateMutator, searchResultMutator } from '../../lib/data/places';
 
 // Components
 import IconedButton from '../Elements/IconedButton.vue';
@@ -58,7 +58,7 @@ export default {
     // API calls to find city
     async searchCity() {
       // Loader for cities is ACTIVE
-      this.finding.cities = this.finding.cities | 1;
+      findingStateMutator('cities').finding();
 
       if (this.finding.cities === 1) {
         // API calls find cities
@@ -66,16 +66,16 @@ export default {
           let result = await searchCity(this.find);
           
           if (result) {
-            this.finding.cities = this.finding.cities << 1;
-            this.searchResult = result;
+            findingStateMutator('cities').success();
+            searchResultMutator.set(result);
           }
         } catch (error) {
-          this.finding.cities = this.finding.cities | 2;
-          console.error({error})
+          findingStateMutator('cities').failed();
+          console.error({error});
         }
       } else {
-        this.finding.cities = this.finding.cities >> 1;
-        this.searchResult = []
+        findingStateMutator('cities').idle();
+        searchResultMutator.empty();
       }
     },
   }
