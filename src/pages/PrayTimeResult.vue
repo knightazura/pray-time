@@ -1,5 +1,5 @@
 <template>
-  <h1 class="selected-city text-center mt-8">{{ selected }}</h1>
+  <h1 class="selected-city text-center mt-8">{{ selected.city }}</h1>
 
   <!-- Active Pray Time 3D Widget -->
   <div class="active-pray-time p-8 mt-4 relative" style="background-color: #0099FF; border-radius: 16px; box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);">
@@ -66,9 +66,12 @@ export default {
 
   setup() {
     const router = useRouter();
-    const { selected } = toRefs(places);
+    const { selected, saved } = toRefs(places);
 
-    const saveToLocalStorage = () => localStorage.setItem("place", selected.value)
+    const saveToLocalStorage = () => {
+      saved.value.push(selected.value)
+      localStorage.setItem("place", JSON.stringify(saved.value))
+    }
     const backToHome = () => router.push('/')
 
     return {

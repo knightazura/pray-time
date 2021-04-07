@@ -26,7 +26,7 @@ const properTime = ((time, index, arr) => {
 const prayTimesByCity = async function(place) {
   const query = queryStringBuilder({
     city: place.city,
-    country: place.countryCode,
+    country: place.country,
     method: 3,
     month: currentDate.getMonth() + 1,
     year: currentDate.getFullYear()

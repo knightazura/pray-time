@@ -7,7 +7,8 @@ export const places = reactive({
     prayTime: false
   },
   searchResult: [],
-  selected: '',
+  selected: null,
+  saved: [],
   metadata: {
     currentOffset: 0,
     totalCount: 0

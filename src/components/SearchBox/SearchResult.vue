@@ -49,7 +49,7 @@ export default {
       if (result.length > 0) {
         setPrayTimes(result);
 
-        selected.value = place.city;
+        selected.value = place;
         searchResultMutator.empty();
 
         finding.value.prayTime = false;
