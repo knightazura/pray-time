@@ -4,7 +4,8 @@
       v-model="find"
       type="text"
       class="search-city"
-      placeholder="Search your living place (city)" />
+      placeholder="Search your living place (city)"
+      @keyup.enter="searchCity" />
     <IconedButton @click="searchCity" />
 
     <SearchResult v-show="finding.cities === 2" :maxHeight="maxHeight" />
