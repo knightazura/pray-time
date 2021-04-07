@@ -20,7 +20,8 @@ const setNextOtherPrays = (timings, index) => {
   nextOtherPrays.value.push({
     name: FIVE_PRAYS[index],
     time: timings[FIVE_PRAYS[index]],
-    nextDay: true
+    nextDay: true,
+    icon: setPrayIconName(FIVE_PRAYS[index])
   });
 }
 
@@ -44,6 +45,18 @@ const startTimer = () => {
       timer.value = DateTime.local().diff(prayTime, ['hours', 'minutes', 'second']).toObject();
     }
   }, 60000);
+}
+
+const extractTime = time => time.split(" ")[0];
+
+const setPrayIconName = prayName => `${prayName.toLowerCase()}-icon`;
+
+const setNextActivePray = (name, time) => {
+  return {
+    name: name,
+    time: extractTime(time),
+    icon: setPrayIconName(name)
+  }
 }
 
 /**
@@ -93,10 +106,7 @@ export const nextActiveTime = () => {
       if ((nearest === 0 && diff < nearest) || (nearest !== 0 && diff > nearest)) {
         nearest = diff;
         nextActivePrayIndex = index;
-        nap = {
-          name: name,
-          time: timings[name]
-        };
+        nap = setNextActivePray(name, timings[name]);
       }
 
       // Get other next prays for today
@@ -104,7 +114,8 @@ export const nextActiveTime = () => {
         nextOtherPrays.value.push({
           name: name,
           time: timings[name],
-          nextDay: false
+          nextDay: false,
+          icon: setPrayIconName(name)
         });
 
         // At the end of the day iteration
@@ -113,10 +124,7 @@ export const nextActiveTime = () => {
 
           // next ACTIVE pray is tomorrow Fajr!
           if (nextActivePrayIndex === 0) {
-            nap = {
-              name: FIVE_PRAYS[0],
-              time: nextDayTime.timings[FIVE_PRAYS[0]]
-            };
+            nap = setNextActivePray(FIVE_PRAYS[0], nextDayTime.timings[FIVE_PRAYS[0]]);
 
             // Because all next other prays are tomorrow
             // reset it!
