@@ -1,6 +1,6 @@
 <template>
   <button class="iconed-button">
-    <fa v-if="buttonState && finding.cities === 0" icon="search" class="text-white mx-1" />
+    <fa v-if="buttonState && finding.cities !== 1" icon="search" class="text-white mx-1" />
     <fa v-if="!buttonState && !finding.prayTime" icon="times" class="text-white mx-1" />
     <fa v-if="(!buttonState && finding.prayTime) || (buttonState && finding.cities === 1)" icon="spinner" class="animate-spin text-white mx-1" />
   </button>
