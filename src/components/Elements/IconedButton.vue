@@ -1,7 +1,8 @@
 <template>
   <button class="iconed-button">
-    <fa v-if="buttonState === 1" icon="search" class="text-white mx-1" />
-    <fa v-if="buttonState === 0" icon="times" class="text-white mx-1" />
+    <fa v-if="buttonState && finding.cities === 0" icon="search" class="text-white mx-1" />
+    <fa v-if="!buttonState && !finding.prayTime" icon="times" class="text-white mx-1" />
+    <fa v-if="(!buttonState && finding.prayTime) || (buttonState && finding.cities === 1)" icon="spinner" class="animate-spin text-white mx-1" />
   </button>
 </template>
 
@@ -11,10 +12,11 @@ import { places } from '../../lib/data/places';
 
 export default {
   setup() {
-    const { searchResult } = toRefs(places);
+    const { finding, searchResult } = toRefs(places);
     
     return {
-      buttonState: computed(() => searchResult.value.length > 0 ? 0 : 1)
+      buttonState: computed(() => searchResult.value.length > 0 ? 0 : 1),
+      finding
     }
   }
 }
