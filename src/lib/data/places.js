@@ -1,7 +1,7 @@
 import { reactive } from "vue";
 
 export const places = reactive({
-  find: '',
+  find: "",
   finding: {
     cities: 0,
     prayTime: false
@@ -16,9 +16,9 @@ export const places = reactive({
 });
 
 export const searchResultMutator = {
-  set: result => places.searchResult = result,
-  empty: () => places.searchResult = []
-}
+  set: result => (places.searchResult = result),
+  empty: () => (places.searchResult = [])
+};
 
 export const findingStateMutator = prop => {
   /**
@@ -31,9 +31,9 @@ export const findingStateMutator = prop => {
    * 3       - 11   = FAILED;
    */
   return {
-    idle: () => places.finding[prop] = places.finding[prop] >> 2,
-    finding: () => places.finding[prop] = places.finding[prop] | 1,
-    success: () => places.finding[prop] = places.finding[prop] << 1,
-    failed: () => places.finding[prop] = places.finding[prop] | 2
-  }
-}
+    idle: () => (places.finding[prop] = places.finding[prop] >> 2),
+    finding: () => (places.finding[prop] = places.finding[prop] | 1),
+    success: () => (places.finding[prop] = places.finding[prop] << 1),
+    failed: () => (places.finding[prop] = places.finding[prop] | 2)
+  };
+};

@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
-import SERVICES from './index';
-import queryStringBuilder from '../lib/queryString';
+import SERVICES from "./index";
+import queryStringBuilder from "../lib/queryString";
 
 const currentDate = new Date();
 
-const properTime = ((time, index, arr) => {
+const properTime = (time, index, arr) => {
   let today = currentDate.getDate();
 
   // If first day of month, then only takes current day and next day
@@ -18,10 +18,13 @@ const properTime = ((time, index, arr) => {
     return time;
   }
   // If it's last day of month, takes current day and first day of next month (fetch data again)
-  else if (Object.is(today, arr.length) && (index === arr.length - 1 || index === arr.length - 2)) {
+  else if (
+    Object.is(today, arr.length) &&
+    (index === arr.length - 1 || index === arr.length - 2)
+  ) {
     return time;
   }
-})
+};
 
 const prayTimesByCity = async function(place) {
   const query = queryStringBuilder({
@@ -33,7 +36,9 @@ const prayTimesByCity = async function(place) {
   });
 
   try {
-    let response = await axios.get(`${SERVICES.PRAYTIMES_API}/calendarByCity?${query}`);
+    let response = await axios.get(
+      `${SERVICES.PRAYTIMES_API}/calendarByCity?${query}`
+    );
 
     if (response.data.status === "OK" && response.status === 200) {
       let times = [...response.data.data];
@@ -43,8 +48,6 @@ const prayTimesByCity = async function(place) {
   } catch (error) {
     return error;
   }
-}
+};
 
-export {
-  prayTimesByCity
-}
+export { prayTimesByCity };
