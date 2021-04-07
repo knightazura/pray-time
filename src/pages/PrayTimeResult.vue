@@ -1,22 +1,22 @@
 <template>
-  <h1 class="selected-city text-center mt-8">Jakarta</h1>
+  <h1 class="selected-city text-center mt-8">{{ selected }}</h1>
 
   <!-- Active Pray Time 3D Widget -->
   <div class="active-pray-time p-8 mt-4 relative" style="background-color: #0099FF; border-radius: 16px; box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);">
     <div class="pray-icon" style="padding-top: 12px; position: absolute; top: 32px; right: 32px;">
-      <ashr-icon class="mx-auto"></ashr-icon>
+      <component :is="nextActivePray.icon" class="mx-auto"></component>
     </div>
-    <p class="pray-name text-white" style="font-size: 24px; text-shadow: -4px 4px 8px rgba(0, 0, 0, 0.25);">Next is Ashr</p>
+    <p class="pray-name text-white" style="font-size: 24px; text-shadow: -4px 4px 8px rgba(0, 0, 0, 0.25);">Next is {{ nextActivePray.name }}</p>
     <p class="text-sm text-white" style="color: #C5E8FF; text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.25);">in 01 hour and 37 minutes</p>
-    <p class="time text-6xl text-white pt-4" style="text-shadow: -12px 16px 24px rgba(0, 0, 0, 0.45);">15.32</p>
+    <p class="time text-6xl text-white pt-4" style="text-shadow: -12px 16px 24px rgba(0, 0, 0, 0.45);">{{ nextActivePray.time }}</p>
   </div>
   
   <!-- Next time -->
   <div class="full-bleed next-time mt-9">
     <ol>
-      <li v-for="(np, i) in nextPrays" :key="i">
+      <li v-for="(np, i) in nextOtherPrays" :key="i">
         <div class="px-9 flex items-center next-prays">
-          <div class="pray-icon" style="padding-top: 12px;">
+          <div class="pray-icon" :class="np.name === 'Isha' ? 'pt-2' : 'pt-3'">
             <component :is="np.icon" class="mx-auto"></component>
           </div>
           <div class="flex flex-col ml-4">
@@ -39,16 +39,16 @@
 
 <script>
 // Modules
-import { computed, toRefs } from 'vue';
+import { toRefs } from 'vue';
 
 // Local modules
-import { prayTimes, nextActivePray } from '../lib/data/pray-time';
+import { nextActivePray, nextOtherPrays } from '../lib/data/pray-time';
 import { places } from '../lib/data/places';
 
 // Components
 import FajrIcon from '../components/Elements/PrayIcons/Fajr.vue';
-import DhuhurIcon from '../components/Elements/PrayIcons/Dhuhur.vue';
-import AshrIcon from '../components/Elements/PrayIcons/Ashr.vue';
+import DhuhrIcon from '../components/Elements/PrayIcons/Dhuhr.vue';
+import AsrIcon from '../components/Elements/PrayIcons/Asr.vue';
 import MaghribIcon from '../components/Elements/PrayIcons/Maghrib.vue';
 import IshaIcon from '../components/Elements/PrayIcons/Isha.vue';
 
@@ -57,21 +57,20 @@ export default {
   
   components: {
     FajrIcon,
-    DhuhurIcon,
-    AshrIcon,
+    DhuhrIcon,
+    AsrIcon,
     MaghribIcon,
     IshaIcon
   },
 
   setup() {
-    const nextPrays = [
-      { name: 'Maghrib', time: '18.21', icon: 'maghrib-icon' },
-      { name: 'Isha', time: '19.13', icon: 'isha-icon' },
-      { name: 'Fajr', time: '04.35', icon: 'fajr-icon' },
-      { name: 'Dhuhur', time: '12.07', icon: 'dhuhur-icon' }
-    ]
+    const { selected } = toRefs(places);
 
-    return { nextPrays }
+    return {
+      selected,
+      nextActivePray,
+      nextOtherPrays,
+    }
   }
 }
 </script>
