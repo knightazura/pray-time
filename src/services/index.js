@@ -1,10 +1,10 @@
 const GEOCITIES_API =
   process.env.NODE_ENV === "production"
-    ? process.env.VITE_GEOCITIES_API
+    ? "https://mzk-world-cities-api.herokuapp.com/v1"
     : import.meta.env.VITE_GEOCITIES_API;
 const PRAYTIMES_API =
   process.env.NODE_ENV === "production"
-    ? process.env.VITE_PRAYTIMES_API
+    ? "https://api.aladhan.com/v1"
     : import.meta.env.VITE_PRAYTIMES_API;
 
 const SERVICES = {
