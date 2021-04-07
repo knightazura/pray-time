@@ -30,7 +30,7 @@ export const findingStateMutator = prop => {
    * 3       - 11   = FAILED;
    */
   return {
-    idle: () => places.finding[prop] = places.finding[prop] >> 1,
+    idle: () => places.finding[prop] = places.finding[prop] >> 2,
     finding: () => places.finding[prop] = places.finding[prop] | 1,
     success: () => places.finding[prop] = places.finding[prop] << 1,
     failed: () => places.finding[prop] = places.finding[prop] | 2
