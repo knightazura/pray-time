@@ -15,9 +15,14 @@
 </template>
 
 <script>
+import { toRefs } from 'vue';
+import { useRouter } from 'vue-router';
 // Components
 import SearchInput from '../components/SearchBox/SearchInput.vue';
 import mzkLogo from '../components/Elements/mzkLogo.vue';
+import { prayTimesByCity } from '../services/pray-times';
+import { setPrayTimes } from '../lib/data/pray-time';
+import { places, searchResultMutator } from '../lib/data/places';
 
 export default {
   name: 'Home',
@@ -25,5 +30,36 @@ export default {
     SearchInput,
     mzkLogo
   },
+
+  setup() {
+    const router = useRouter();
+    const { finding, selected } = toRefs(places)
+
+    return {
+      finding,
+      selected,
+      router
+    }
+  },
+
+  async mounted() {
+    const savedPlace = localStorage.getItem("place")
+
+    if (savedPlace) {
+      let result = await prayTimesByCity(savedPlace);
+
+      if (result.length > 0) {
+        setPrayTimes(result);
+
+        this.selected.value = savedPlace;
+        searchResultMutator.empty();
+
+        this.finding.value.prayTime = false;
+
+        // Route to result page
+        this.router.push(`/result/${savedPlace}`)
+      }
+    }
+  }
 }
 </script>
