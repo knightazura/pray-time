@@ -27,10 +27,10 @@
       </li>
     </ol>
     <div class="flex mt-8 mb-4 mx-4 p-2 rounded-2xl bg-white border-main items-center">
-      <div class="flex-grow p-4 rounded-lg text-shad text-white font-bold bg-gradient-to-b from-action to-action-end border border-white border-opacity-40" style="text-shadow: -4px 8px 8px rgba(0, 0, 0, 0.08);">
+      <div @click="saveToLocalStorage" class="save-place-button">
         <fa icon="arrow-down" size="lg" class="mr-3"></fa> Save for next time
       </div>
-      <div class="flex-shrink">
+      <div @click="backToHome" class="flex-shrink cursor-pointer">
         <fa icon="search" size="lg" class="mx-4"></fa>
       </div>
     </div>
@@ -40,6 +40,7 @@
 <script>
 // Modules
 import { toRefs } from 'vue';
+import { useRouter } from 'vue-router';
 
 // Local modules
 import { nextActivePray, nextOtherPrays } from '../lib/data/pray-time';
@@ -64,12 +65,18 @@ export default {
   },
 
   setup() {
+    const router = useRouter();
     const { selected } = toRefs(places);
+
+    const saveToLocalStorage = () => localStorage.setItem("place", selected.value)
+    const backToHome = () => router.push('/')
 
     return {
       selected,
       nextActivePray,
       nextOtherPrays,
+      saveToLocalStorage,
+      backToHome
     }
   }
 }
@@ -90,6 +97,11 @@ export default {
   box-shadow: inset 0px 4px 8px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
+}
+
+.save-place-button {
+  @apply flex-grow p-4 rounded-lg text-white font-bold bg-gradient-to-b from-action to-action-end border border-white border-opacity-40 cursor-pointer;
+  text-shadow: -4px 8px 8px rgba(0, 0, 0, 0.08);
 }
 
 ol > li {
