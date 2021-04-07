@@ -35,6 +35,12 @@ export default {
     // Search pray times
     const checkPrayTimes = async function(place) {
       finding.value.prayTime = true;
+
+      // State for finding cities becomes IDLE
+      // Wrapped state mutator with timeout for better UX
+      // given slightly mark that user clicked an item
+      setTimeout(() => findingStateMutator('cities').idle(), 100);
+
       let result = await prayTimesByCity(place);
 
       if (result.length > 0) {
@@ -44,9 +50,6 @@ export default {
         searchResultMutator.empty();
 
         finding.value.prayTime = false;
-        
-        // State for finding cities becomes IDLE
-        findingStateMutator('cities').idle();
       }
     }
 
