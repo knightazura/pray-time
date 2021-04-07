@@ -17,6 +17,7 @@
 <script>
 // Modules
 import { toRefs } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 
 // Local modules & data
 import { searchCity } from '../../services/geolocation';
@@ -29,6 +30,8 @@ export default {
 
   setup(props) {
     // Init
+    const router = useRouter();
+    const route = useRoute();
     const { selected, searchResult, find, finding, metadata } = toRefs(places);
     const { maxHeight } = toRefs(props);
 
@@ -50,6 +53,11 @@ export default {
         searchResultMutator.empty();
 
         finding.value.prayTime = false;
+
+        // Route to result page
+        router.push({
+          path: `/result/${place.city}`
+        })
       }
     }
 
